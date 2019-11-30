@@ -1,6 +1,7 @@
 package com.example.mosaic;
 
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -49,6 +51,17 @@ public class SongFragment extends Fragment {
         ListViewAdapter ladapter = new ListViewAdapter(getActivity(), songTitles, images, songArtist);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(ladapter);
+
+        // Set a listener for items clicks
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Intent intent = new Intent(getContext(),SingleMusicItem.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

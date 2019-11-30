@@ -28,17 +28,37 @@ public class ListViewAdapter  extends ArrayAdapter<String> {
 
     public View getView(int position, View convertView,  ViewGroup parent) {
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row = inflater.inflate(R.layout.single_row, parent, false);
+        // ListView optimization to recycle views as the layout inflation process is expensive
+        View row = convertView;
+        MyViewHolder holder = null;
 
-        ImageView myImage  = row.findViewById(R.id.imageView);
-        TextView myTitle = row.findViewById(R.id.titles);
-        TextView myDescription = row.findViewById(R.id.description);
+        if(row == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(R.layout.single_row, parent, false);
+            holder = new MyViewHolder(row);
+            row.setTag(holder);
+        }
+        else {
+            holder = (MyViewHolder)row.getTag();
+        }
 
-        myImage.setImageResource(image);
-        myTitle.setText(titles[position]);
-        myDescription.setText(descriptions[position]);
+        holder.myImage.setImageResource(image);
+        holder.myTitle.setText(titles[position]);
+        holder.myDescription.setText(descriptions[position]);
 
         return row;
+    }
+}
+
+class MyViewHolder {
+
+    ImageView myImage;
+    TextView myTitle;
+    TextView myDescription;
+
+    MyViewHolder(View v){
+        myImage = v.findViewById(R.id.imageView);
+        myTitle = v.findViewById(R.id.titles);
+        myDescription = v.findViewById(R.id.description);
     }
 }
